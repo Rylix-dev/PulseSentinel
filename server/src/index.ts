@@ -1,16 +1,9 @@
-import { serve } from '@hono/node-server'
-import { Hono } from 'hono'
+import app from "./config/init";
+import { serve } from "@hono/node-server";
+import logger from "./config/logger";
+const PORT = 3000;
 
-const app = new Hono()
+app.get("/health", (c) => c.json({ status: "ok" }));
 
-app.get('/', (c) => {
-  return c.text('Hello Hono Test!')
-})
-
-const port = 3000
-console.log(`Server is running on port ${port}`)
-
-serve({
-  fetch: app.fetch,
-  port
-})
+logger.info(`Server listening on port ${PORT}`);
+serve({ fetch: app.fetch, port: PORT });
